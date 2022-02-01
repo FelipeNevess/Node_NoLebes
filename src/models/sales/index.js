@@ -15,6 +15,38 @@ const verifyProducts = async (quant) => {
   return response;
 };
 
+const removeDateSales = async (id) => {
+  const query = `
+    DELETE FROM sales
+    WHERE id = ?
+  `;
+
+  await connection.execute(query, [id]);
+};
+
+const updateQuantityAdd = async (quant) => {
+  const query = `
+    UPDATE products
+      SET quantity = quantity - ?
+    WHERE id = ?
+  `;
+  await Promise.all(quant.itemsSold.map(async ({ product_id: productId, quantity }) => {
+    await connection.execute(query, [quantity, productId]);
+  }));
+};
+
+const updateQuantityRemove = async (quant) => {
+  const result = await quant;
+  const query = `
+    UPDATE products
+      SET quantity = quantity + ?
+    WHERE id = ?
+  `;
+  await Promise.all(result.map(async ({ product_id: productId, quantity }) => {
+    await connection.execute(query, [quantity, productId]);
+  }));
+};
+
 const create = async (array) => {
   const queryDate = 'INSERT INTO sales(date) VALUES(NOW());';
 
@@ -65,9 +97,43 @@ const getById = async (id) => {
   return result;
 };
 
+const update = async (id, array) => {
+  const query = `
+    UPDATE sales_products
+      SET quantity = ?, product_id = ?
+    WHERE sale_id  = ?;
+  `;
+
+  await Promise.all(array.map(async ({ quantity, product_id: productId }) => {
+    await connection.execute(query, [quantity, productId, id]);
+  }));
+
+  return {
+    saleId: id,
+    itemUpdated: array,
+  };
+};
+
+const remove = async (id) => {
+  await removeDateSales(id);
+
+  const query = `
+    DELETE FROM sales_products
+    WHERE sale_id = ?;
+  `;
+
+  await connection.execute(query, [id]);
+};
+
+
 module.exports = {
   create,
-  verifyProducts,
   getAll,
   getById,
+  update,
+  remove,
+
+  verifyProducts,
+  updateQuantityAdd,
+  updateQuantityRemove
 };

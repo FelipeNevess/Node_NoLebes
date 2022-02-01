@@ -56,8 +56,35 @@ const getById = async (id) => {
   return result;
 };
 
+const update = async (id, array) => {
+  const response = await models.getById(id);
+
+  if (response.length === 0) {
+    return { code: 404, message: 'Sale not found' };
+  }
+
+  const result = await models.update(id, array);
+
+  return result;
+};
+
+const remove = async (id) => {
+  const getProduct = await getById(id);
+
+  if (getProduct.message) {
+    return getProduct;
+  }
+
+  await models.remove(id);
+  await models.updateQuantityRemove(getProduct);
+
+  return getProduct;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
+  remove,
 };
