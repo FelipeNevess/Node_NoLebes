@@ -10,7 +10,6 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(body_parser.json());
-
 app.use(router);
 
 app.listen(port, console.log('Service Started 🚀'));
