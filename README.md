@@ -10,8 +10,7 @@
 
 ### Configure o arquivo `.env.example`, renomeie para `.env` e preencha os dados de conexão com banco
 
-Dessa forma:
-
+De acordo com sua conexão, ex:
 ```
 MYSQL_HOST=localhost
 MYSQL_USER=nome
