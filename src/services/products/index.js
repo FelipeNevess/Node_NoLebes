@@ -56,8 +56,8 @@ const getById = async (id) => {
 
 const update = async (id, name, quantity) => {
   const responseVerify = await verifyIdExists(id);
-  const checkErrorName = error.verifyInfosName(name);
-  const checkErrorQuantity = error.verifyInfosQuantity(quantity);
+  const checkErrorName = verifyInfos.verifyInfosName(name);
+  const checkErrorQuantity = verifyInfos.verifyInfosQuantity(quantity);
 
   switch (true) {
     case responseVerify.length === 0:
