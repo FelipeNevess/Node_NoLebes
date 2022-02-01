@@ -23,9 +23,8 @@ const create = async (array) => {
     return { code: 404, message: 'Product_id not found' };
   }
 
-  const rep = await models.verifyProducts(array);
-
-  const filteredItemQuantity = rep
+  const verifyArray = await models.verifyProducts(array);
+  const filteredItemQuantity = verifyArray
     .some((arr, i) => arr
       .some(({ quantity }) => array[i].quantity > quantity));
 
@@ -35,7 +34,7 @@ const create = async (array) => {
 
   const result = await models.create(array);
 
-  await models.update(result);
+  await models.updateQuantityAdd(result);
 
   return result;
 };

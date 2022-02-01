@@ -22,16 +22,11 @@ const create = async (name, quantity) => {
   const checkErrorName = verifyInfos.verifyInfosName(name);
   const checkErrorQuantity = verifyInfos.verifyInfosQuantity(quantity);
 
-  switch (true) {
-    case checkProduct !== undefined:
-      return { code: 409, message: 'Product already exists' };
-    case checkErrorName.message:
-      return checkErrorName;
-    case checkErrorQuantity.message:
-      return checkErrorQuantity;
-    default:
-      break;
-  };
+  if (checkProduct !== undefined) {
+    return { code: 409, message: 'Product already exists' };
+  }
+  if (checkErrorName.message) { return checkErrorName }
+  if (checkErrorQuantity.message) { return checkErrorQuantity }
 
   const result = await models.create(name, quantity);
 
@@ -59,14 +54,11 @@ const update = async (id, name, quantity) => {
   const checkErrorName = verifyInfos.verifyInfosName(name);
   const checkErrorQuantity = verifyInfos.verifyInfosQuantity(quantity);
 
-  switch (true) {
-    case responseVerify.length === 0:
-      return { code: 404, message: 'Product not found' };
-    case checkErrorName.message:
-      return checkErrorName;
-    case checkErrorQuantity.message:
-      return checkErrorQuantity;
+  if (responseVerify.length === 0) {
+    return { code: 404, message: 'Product not found' };
   };
+  if (checkErrorName.message) { return checkErrorName };
+  if (checkErrorQuantity.message) { return checkErrorQuantity };
 
   const result = await models.update(id, name, quantity);
 
