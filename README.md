@@ -26,7 +26,7 @@ PORT=3000
 
 Iniciando a aplicação:
 
-- `npm instal` para instalar as dependências
+- `npm install` para instalar as dependências
 - `npm run debug` iniciar a aplicação com `nodemon` ou
 - `npm start` iniciar a aplicação com `node`
 
